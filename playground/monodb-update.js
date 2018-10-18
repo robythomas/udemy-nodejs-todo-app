@@ -29,7 +29,7 @@ mongoClient.connect((err, client) => {
       console.log(`Unable to update Users - ${err}`);
     }).finally(() => {
       client.close();
-      console.log()
+      console.log("Successfully disconnected from Mongodb database server.");
     });
   }
 });
