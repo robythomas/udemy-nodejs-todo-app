@@ -1,23 +1,24 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+
 const {mongoose, saveModel} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 
-var newTodo = new Todo({
-  text: 'Cook Dinner'
+var app = express();
+app.use(bodyParser.json());
+
+app.post('/todos', (req, res) => {
+  var newTodo = new Todo({
+    text: req.body.text
+  });
+  newTodo.save().then((doc) => {
+    res.status(201).send(doc);
+  }, (err) => {
+    res.status(400).send(`Failed to save the todo item - ${err}`);
+  })
 });
 
-saveModel(newTodo);
-
-var completedTodo = new Todo({
-  text: 'Eat breakfast',
-  completed: true,
-  completedAt: new Date().getTime()
+app.listen(3000, () => {
+  console.log("TodoApp has started");
 });
-
-saveModel(completedTodo);
-
-var newUser = new User({
-  email: 'me@somewhere.com'
-});
-
-saveModel(newUser);
