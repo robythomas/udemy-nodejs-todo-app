@@ -20,11 +20,29 @@ describe('POST /todos', () => {
         if(err) {
           return done(err);
         }
-        Todo.find().then((todos) => {
-          expect(todos.length).to.equal(1);
-          expect(todos[0].text).to.equal(text);
-          done();
-        }).catch((e) => done(e));
+        Todo.find()
+          .then((todos) => {
+            expect(todos.length).to.equal(1);
+            expect(todos[0].text).to.equal(text);
+            done();
+          })
+          .catch((e) => done(e));
+      });
+  });
+
+  it("should not create a new todo with invalid body data", (done) => {
+    request(app).post('/todos').send({})
+      .expect(400)
+      .end((err, res) => {
+        if(err) {
+          return done(error);
+        }
+        Todo.find()
+          .then((todos) => {
+            expect(todos).to.be.empty;
+            done();
+          })
+          .catch((e) => done(e));
       });
   });
 });
