@@ -8,6 +8,30 @@ beforeEach((done) => {
   Todo.deleteMany({}).then(() => done());
 });
 
+describe('GET /todos', () => {
+  it("should list all todos", (done) => {
+    var todo = new Todo({
+      text: 'First todo'
+    });
+    todo.save();
+    todo = new Todo({
+      text: 'Second todo'
+    });
+    todo.save();
+    todo = new Todo({
+      text: 'Third todo'
+    });
+    todo.save();
+
+    request(app).get('/todos')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todos.length).to.equal(3);
+      })
+      .end(done);
+  });
+});
+
 describe('POST /todos', () => {
   it("should create a new todo", (done) => {
     var text = 'Test creation of a new todo';
