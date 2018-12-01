@@ -29,7 +29,9 @@ describe('GET /todos', () => {
       })
       .end(done);
   });
+});
 
+describe('GET /todos/:id', () => {
   it("should return a todo when valid id is provided", (done) => {
     Todo.findOne().then((oneTodo) => {
       request(app).get(`/todos/${oneTodo._id}`)
