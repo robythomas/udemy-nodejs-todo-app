@@ -1,7 +1,7 @@
 const {MongoClient, ObjectID} = require('mongodb');
 
 const mongoClient = new MongoClient(
-  process.env.MONGODB_URI || 'mongodb://localhost:27017/TodoApp',
+  'mongodb://localhost:27017/TodoApp',
   {useNewUrlParser: true});
 
 mongoClient.connect((err, client) => {
