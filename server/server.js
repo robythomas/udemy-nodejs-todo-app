@@ -27,7 +27,7 @@ app.get('/todos/:id', (req, res) => {
         res.status(404).send(`Could not find todo with id ${req.params['id']}`);
       }
       else {
-        res.send(todo);
+        res.send({todo});
       }
     }, (err) => {
         res.status(500).send(`Could not fetch todos`);

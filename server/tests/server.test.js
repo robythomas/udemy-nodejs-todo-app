@@ -35,7 +35,7 @@ describe('GET /todos', () => {
       request(app).get(`/todos/${oneTodo._id}`)
         .expect(200)
         .expect((res) => {
-          expect(res.body._id).to.equal(oneTodo._id.toString());
+          expect(res.body.todo._id).to.equal(oneTodo._id.toString());
         })
         .end(done);
     }).catch((e) => done(e));
