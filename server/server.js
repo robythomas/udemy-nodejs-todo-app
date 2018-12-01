@@ -20,13 +20,13 @@ app.get('/todos', (req, res) => {
 });
 
 app.get('/todos/:id', (req, res) => {
-  if(!ObjectID.isValid(req.params['id'])) {
+  if(!ObjectID.isValid(req.params.id)) {
     res.status(400).send(`Your request has provided an invalid data`);
   }
   else {
-    Todo.findById(req.params['id']).then((todo) => {
+    Todo.findById(req.params.id).then((todo) => {
       if(!todo) {
-        res.status(404).send(`Could not find todo with id ${req.params['id']}`);
+        res.status(404).send(`Could not find todo with id ${req.params.id}`);
       }
       else {
         res.send({todo});
@@ -50,13 +50,13 @@ app.post('/todos', (req, res) => {
 });
 
 app.delete('/todos/:id', (req, res) => {
-  if(!ObjectID.isValid(req.params['id'])) {
+  if(!ObjectID.isValid(req.params.id)) {
     res.status(400).send("Your request has provided invalid data");
   }
   else {
-    Todo.findByIdAndDelete(req.params['id']).then((todo) => {
+    Todo.findByIdAndDelete(req.params.id).then((todo) => {
       if(!todo) {
-        res.status(404).send(`Could not find a todo with id ${req.params['id']} to delete`);
+        res.status(404).send(`Could not find a todo with id ${req.params.id} to delete`);
       }
       else {
         res.send({todo});
