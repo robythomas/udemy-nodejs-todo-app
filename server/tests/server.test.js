@@ -11,19 +11,21 @@ var todoSeed = [
 ];
 
 beforeEach((done) => {
-  Todo.deleteMany({}).then(() => done());
+  Todo.deleteMany({}).then(() => {
+    Todo.insertMany(todoSeed).then(() => {
+      done();
+    });
+  }).catch((e) => done(e));
 });
 
 describe('GET /todos', () => {
   it("should list all todos", (done) => {
-    Todo.insertMany(todoSeed).then(() => {
-      request(app).get('/todos')
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.todos.length).to.equal(3);
-        })
-        .end(done);
-    }).catch((e) => done(e));
+    request(app).get('/todos')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todos.length).to.equal(3);
+      })
+      .end(done);
   });
 });
 
@@ -39,7 +41,7 @@ describe('POST /todos', () => {
         if(err) {
           return done(err);
         }
-        Todo.find()
+        Todo.find().where('text').nin(todoSeed.map(a => a.text))
           .then((todos) => {
             expect(todos.length).to.equal(1);
             expect(todos[0].text).to.equal(text);
@@ -56,7 +58,7 @@ describe('POST /todos', () => {
         if(err) {
           return done(err);
         }
-        Todo.find()
+        Todo.find().where('text').nin(todoSeed.map(a => a.text))
           .then((todos) => {
             expect(todos).to.be.empty;
             done();
