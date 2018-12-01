@@ -59,7 +59,7 @@ describe('GET /todos/:id', () => {
 
   it("should return a Bad Request response when invalid id is provided", (done) => {
     var invalidId = "5c020351c412a12e07d26864Abc1d";
-    request(app).get(`/todos/${invalidId._id}`)
+    request(app).get(`/todos/${invalidId}`)
       .expect(400)
       .end(done);
   });
