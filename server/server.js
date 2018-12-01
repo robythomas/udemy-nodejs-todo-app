@@ -6,6 +6,8 @@ const {mongoose, saveModel} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
 
+const port = process.env.PORT || 3000;
+
 var app = express();
 app.use(bodyParser.json());
 
@@ -47,8 +49,8 @@ app.post('/todos', (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("TodoApp has started");
+app.listen(port, () => {
+  console.log(`TodoApp has started on ${port}`);
 });
 
 module.exports = {

@@ -4,8 +4,12 @@
   "description": "A TODO Management Application for NodeJS Udemy Tutorial",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha './{,!(node_modules)/**/}*.test.js'",
     "test-watch": "nodemon -x 'npm test'"
+  },
+  "engines": {
+    "node": "10.14.0"
   },
   "author": "Roby Thomas",
   "license": "ISC",
