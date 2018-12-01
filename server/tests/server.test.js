@@ -29,41 +29,6 @@ beforeEach((done) => {
   }).catch((e) => done(e));
 });
 
-describe('GET /todos', () => {
-  it("should list all todos", (done) => {
-    request(app).get('/todos')
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.todos.length).to.equal(3);
-      })
-      .end(done);
-  });
-});
-
-describe('GET /todos/:id', () => {
-  it("should return a todo when valid id is provided", (done) => {
-    request(app).get(`/todos/${todoSeed[0]._id}`)
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.todo.text).to.equal(todoSeed[0].text);
-      })
-      .end(done);
-  });
-
-  it("should return a Not Found response when valid non-existing id is provided", (done) => {
-    var validNonExistingId = ObjectID();
-    request(app).get(`/todos/${validNonExistingId._id}`)
-      .expect(404)
-      .end(done);
-  });
-
-  it("should return a Bad Request response when invalid id is provided", (done) => {
-    var invalidId = "5c020351c412a12e07d26864Abc1d";
-    request(app).get(`/todos/${invalidId}`)
-      .expect(400)
-      .end(done);
-  });
-});
 
 describe('POST /todos', () => {
   it("should create a new todo", (done) => {
@@ -104,6 +69,42 @@ describe('POST /todos', () => {
   });
 });
 
+describe('GET /todos', () => {
+  it("should list all todos", (done) => {
+    request(app).get('/todos')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todos.length).to.equal(3);
+      })
+      .end(done);
+  });
+});
+
+describe('GET /todos/:id', () => {
+  it("should return a todo when valid id is provided", (done) => {
+    request(app).get(`/todos/${todoSeed[0]._id}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo.text).to.equal(todoSeed[0].text);
+      })
+      .end(done);
+  });
+
+  it("should return a Not Found response when valid non-existing id is provided", (done) => {
+    var validNonExistingId = ObjectID();
+    request(app).get(`/todos/${validNonExistingId._id}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it("should return a Bad Request response when invalid id is provided", (done) => {
+    var invalidId = "5c020351c412a12e07d26864Abc1d";
+    request(app).get(`/todos/${invalidId}`)
+      .expect(400)
+      .end(done);
+  });
+});
+
 describe("DELETE /todos/:id", () => {
   it("should delete a todo when valid id is provided", (done) => {
     request(app).delete(`/todos/${todoSeed[0]._id}`)
@@ -118,7 +119,7 @@ describe("DELETE /todos/:id", () => {
         }).catch((e) => done(e));
       });
   });
-  it("should return an Not Found response when a valid non-existing id is provided", (done) => {
+  it("should return a Not Found response when a valid non-existing id is provided", (done) => {
     var validNonExistingId = ObjectID();
     request(app).delete(`/todos/${validNonExistingId._id}`)
       .expect(404)
