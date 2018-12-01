@@ -7,9 +7,18 @@ const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
 var todoSeed = [
-  {text: "First todo"},
-  {text: "Second todo"},
-  {text: "Third todo"}
+  {
+    _id: ObjectID(),
+    text: "First todo"
+  },
+  {
+    _id: ObjectID(),
+    text: "Second todo"
+  },
+  {
+    _id: ObjectID(),
+    text: "Third todo"
+  }
 ];
 
 beforeEach((done) => {
@@ -33,14 +42,12 @@ describe('GET /todos', () => {
 
 describe('GET /todos/:id', () => {
   it("should return a todo when valid id is provided", (done) => {
-    Todo.findOne().then((oneTodo) => {
-      request(app).get(`/todos/${oneTodo._id}`)
-        .expect(200)
-        .expect((res) => {
-          expect(res.body.todo._id).to.equal(oneTodo._id.toString());
-        })
-        .end(done);
-    }).catch((e) => done(e));
+    request(app).get(`/todos/${todoSeed[0]._id}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.todo._id).to.equal(todoSeed[0]._id.toString());
+      })
+      .end(done);
   });
 
   it("should return a Not Found response when valid non-existing id is provided", (done) => {
