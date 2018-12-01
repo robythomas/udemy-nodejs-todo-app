@@ -110,7 +110,7 @@ describe("DELETE /todos/:id", () => {
     request(app).delete(`/todos/${todoSeed[0]._id}`)
       .expect(200)
       .expect((res) => {
-        expect(res.body.todo.text).to.equal(todoSeed[0].text);
+        expect(res.body.todo._id).to.equal(todoSeed[0]._id.toString());
       })
       .end((err, res) => {
         Todo.findById(todoSeed[0]._id).then((todo) => {
