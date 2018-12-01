@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 const request = require('supertest');
 
+const {ObjectID} = require('mongodb');
+
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
@@ -25,6 +27,31 @@ describe('GET /todos', () => {
       .expect((res) => {
         expect(res.body.todos.length).to.equal(3);
       })
+      .end(done);
+  });
+
+  it("should return a todo when valid id is provided", (done) => {
+    Todo.findOne().then((oneTodo) => {
+      request(app).get(`/todos/${oneTodo._id}`)
+        .expect(200)
+        .expect((res) => {
+          expect(res.body._id).to.equal(oneTodo._id.toString());
+        })
+        .end(done);
+    }).catch((e) => done(e));
+  });
+
+  it("should return a Not Found response when valid non-existing id is provided", (done) => {
+    var validNonExistingId = ObjectID();
+    request(app).get(`/todos/${validNonExistingId._id}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it("should return a Bad Request response when invalid id is provided", (done) => {
+    var invalidId = "5c020351c412a12e07d26864Abc1d";
+    request(app).get(`/todos/${invalidId._id}`)
+      .expect(400)
       .end(done);
   });
 });

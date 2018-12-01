@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 const {mongoose, saveModel} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
@@ -14,6 +15,25 @@ app.get('/todos', (req, res) => {
   }, (err) => {
     res.status(500).send(`Could not fetch todos - ${err}`);
   });
+});
+
+app.get('/todos/:id', (req, res) => {
+  if(!ObjectID.isValid(req.params['id'])) {
+    res.status(400).send(`Your request has provided an invalid data`);
+  }
+  else {
+    Todo.findById(req.params['id']).then((todo) => {
+      if(!todo) {
+        res.status(404).send(`Could not find todo with id ${req.params['id']}`);
+      }
+      else {
+        res.send(todo);
+      }
+    }, (err) => {
+        res.status(500).send(`Could not fetch todos`);
+      }
+    );
+  }
 });
 
 app.post('/todos', (req, res) => {
