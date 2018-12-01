@@ -49,6 +49,24 @@ app.post('/todos', (req, res) => {
   });
 });
 
+app.delete('/todos/:id', (req, res) => {
+  if(!ObjectID.isValid(req.params['id'])) {
+    res.status(400).send("Your request has provided invalid data");
+  }
+  else {
+    Todo.findByIdAndDelete(req.params['id']).then((todo) => {
+      if(!todo) {
+        res.status(404).send(`Could not find a todo with id ${req.params['id']} to delete`);
+      }
+      else {
+        res.send({todo});
+      }
+    }, (err) => {
+      res.status(500).send("Unable to delete todo");
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`TodoApp has started on ${port}`);
 });
